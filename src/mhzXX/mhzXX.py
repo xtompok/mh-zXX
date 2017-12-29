@@ -24,16 +24,23 @@ class MhZ(object):
 			if not self._checksum_check(data):
 				logging.warning("Checksum error")
 				return None
+			logging.debug("data: {}".format(str(data)))
 			return (data[3]+256*data[2],data[4]-40)
 		except IOError:
 			logging.warning("IO error when reading")
 			return None
 	
 	def read_CO2(self):
-		return self.read_CO2_temp()[0]
+		CO2_temp = self.read_CO2_temp()
+		if CO2_temp:
+			return CO2_temp[0]
+		return None
 	
 	def read_temp(self):
-		return self.read_CO2_temp()[1]
+		CO2_temp = self.read_CO2_temp()
+		if CO2_temp:
+			return CO2_temp[1]
+		return None
 					
 
 	def calibrate_zero(self):
